@@ -1,0 +1,27 @@
+version: '3'
+services:
+  prestashop:
+    image: prestashop/prestashop:1.6-7.0
+    container_name: prestashop
+    network_mode: bridge
+    ports:
+     - "80:80"
+    restart: on-failure
+    links:
+      - mysql
+    volumes:
+       - ${PWD}/volumes/prestashop:/var/www/html
+    depends_on:
+      - mysql
+    environment:
+      - DB_SERVER=mysql
+
+  mysql:
+    image: mysql
+    container_name: mysql
+    network_mode: bridge
+    restart: on-failure
+    volumes:
+     - ${PWD}/volumes/mysql:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=admin
